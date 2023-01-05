@@ -8,8 +8,6 @@ import lombok.*;
  * @created 05/01/2023 - 10:55 PM
  */
 
-// errror response이다. 이전에 작성한 errorcode를 통해서 만들어진다.
-
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -20,14 +18,17 @@ public class APIErrorResponse {
     private final Integer errorCode;
     private final String message;
 
+    // 수동 입력
     public static APIErrorResponse of(Boolean success, Integer errorCode, String message) {
         return new APIErrorResponse(success, errorCode, message);
     }
 
+    // errorcode -> Integer (errorCode) + String (message)가 포함되어 있음
     public static APIErrorResponse of(Boolean success, ErrorCode errorCode) {
         return new APIErrorResponse(success, errorCode.getCode(), errorCode.getMessage());
     }
 
+    //
     public static APIErrorResponse of(Boolean success, ErrorCode errorCode, Exception e) {
         return new APIErrorResponse(success, errorCode.getCode(), errorCode.getMessage(e));
     }

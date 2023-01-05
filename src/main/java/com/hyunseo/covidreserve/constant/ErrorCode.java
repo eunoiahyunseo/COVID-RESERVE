@@ -11,6 +11,9 @@ import java.util.function.Predicate;
  * @created 05/01/2023 - 10:16 PM
  */
 
+/**
+ * 에러를 미리 정의함으로써, 대 내외적으로 이를 다루기 용이하게 함으로써 프로젝트 안정성을 증가시켜주기 위해 설계
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {

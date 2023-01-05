@@ -1,4 +1,4 @@
-# COVID-RESERVE
+# COVID-RESERVE (develop)
 project for spring-mvc
 
 > spring mvc-project 
@@ -10,4 +10,3 @@ project for spring-mvc
 
 * commit 1
 * commit 2
-* commit 3

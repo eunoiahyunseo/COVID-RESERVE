@@ -5,3 +5,5 @@ project for spring-mvc
 > * DDD
 > * ER-DIAGRAM
 > * API
+
+<code>1.0.0</code>

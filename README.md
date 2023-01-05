@@ -6,4 +6,8 @@ project for spring-mvc
 > * ER-DIAGRAM
 > * API
 
-<code>1.0.0</code>
+<code>1.0.1</code>
+
+* commit 1
+* commit 2
+* commit 3

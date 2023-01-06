@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
  * @author ihyeonseo
  */
 
 @RestControllerAdvice(annotations = RestController.class)
-public class APIExceptionHandler {
+public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<APIErrorResponse> general(GeneralException e) {
         ErrorCode errorCode = e.getErrorCode();

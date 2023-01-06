@@ -1,9 +1,12 @@
 package com.hyunseo.covidreserve.error;
 
 import com.hyunseo.covidreserve.constant.ErrorCode;
+import com.hyunseo.covidreserve.dto.APIErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,12 +15,11 @@ import java.util.Map;
 
 /**
  * @author ihyeonseo
- * @created 05/01/2023 - 11:33 PM
  */
 @Controller
 public class BaseErrorController implements ErrorController {
-    @RequestMapping("/error")
-    public ModelAndView error(HttpServletResponse response) {
+    @RequestMapping(path = "/error", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView errorHtml(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = status.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
 
@@ -30,4 +32,15 @@ public class BaseErrorController implements ErrorController {
                 ),
                 status);
     }
+
+    @RequestMapping("/error")
+    public ResponseEntity<APIErrorResponse> error(HttpServletResponse response) {
+        HttpStatus status = HttpStatus.valueOf(response.getStatus());
+        ErrorCode errorCode = status.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
+
+        return ResponseEntity
+                .status(status)
+                .body(APIErrorResponse.of(false, errorCode));
+    }
+
 }

@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * @author ihyeonseo
- * @created 05/01/2023 - 6:48 PM
- * @project covidreserve
  */
 @RequestMapping("/api")
 @RestController
@@ -15,11 +13,14 @@ public class APIEventController {
 
     @GetMapping("/events")
     public List<String> getEvents() {
+        //throw new GeneralException("테스트 에러");
         return List.of("event1", "event2");
     }
 
+    // 우리가 지정한 error가 아니므로, 공통 Error page로 넘어가게 됩니다.
     @PostMapping("/events")
     public Boolean createEvent() {
+        // throw new RuntimeException("run-time 테스트 에러");
         return true;
     }
 
@@ -37,5 +38,4 @@ public class APIEventController {
     public Boolean removeEvent(@PathVariable Integer eventId) {
         return true;
     }
-
 }

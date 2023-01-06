@@ -8,7 +8,6 @@ public class CovidreserveApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CovidreserveApplication.class, args);
-		System.out.println("Hello world!");
 	}
 
 }

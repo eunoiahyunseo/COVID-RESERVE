@@ -21,7 +21,7 @@ public class APIEventController {
 
     // 우리가 지정한 error가 아니므로, 공통 Error page로 넘어가게 됩니다.
     @PostMapping("/events")
-    public Boolean createEvent() { 
+    public Boolean createEvent() {
         throw new GeneralException("장군님");
         // return true;
     }

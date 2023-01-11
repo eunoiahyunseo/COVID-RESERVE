@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 public class APIEventController {
 
+    // [장소, 이름, 상태, 기간]로 필터잉을 가능하게 할 것이다.
     @GetMapping("/events")
     public List<String> getEvents() throws Exception {
         throw new HttpRequestMethodNotSupportedException("GET");

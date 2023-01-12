@@ -2,29 +2,57 @@ package com.hyunseo.covidreserve.service;
 
 import com.hyunseo.covidreserve.constant.EventStatus;
 import com.hyunseo.covidreserve.dto.EventDTO;
+import com.hyunseo.covidreserve.repository.EventRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * 이벤트 서비스
- *
  * @author ihyeonseo
  */
-public interface EventService  {
-    /**
-     * 검색어를 받아서 이벤트 리스트 반환
-     *
-     * @param placeId 장소 ID
-     * @param eventName 이벤트 이름
-     * @param eventStatus 이벤트 상태
-     * @param eventStartDatetime 시작 시간
-     * @param eventEndDatetime 종료 시간
-     * @return
-     */
-    List<EventDTO> findEvents(Long placeId,
-                              String eventName,
-                              EventStatus eventStatus,
-                              LocalDateTime eventStartDatetime,
-                              LocalDateTime eventEndDatetime);
+
+@RequiredArgsConstructor
+@Service
+public class EventService {
+
+    private final EventRepository eventRepository;
+    public List<EventDTO> getEvents(Long placeId,
+                                    String eventName,
+                                    EventStatus eventStatus,
+                                    LocalDateTime eventStartDatetime,
+                                    LocalDateTime eventEndDatetime
+    ) {
+        return eventRepository.findEvents(
+                placeId,
+                eventName,
+                eventStatus,
+                eventStartDatetime,
+                eventEndDatetime
+        );
+    }
+
+    public Optional<EventDTO> getEvent(Long eventId) {
+        return eventRepository.findEvent(eventId);
+    }
+
+    public boolean createEvent(EventDTO eventDTO) {
+        return eventRepository.insertEvent(eventDTO);
+    }
+
+    public boolean modifyEvent(Long eventId, EventDTO eventDTO) {
+        return eventRepository.updateEvent(eventId, eventDTO);
+    }
+
+    public boolean removeEvent(Long eventId) {
+        return eventRepository.deleteEvent(eventId);
+    }
+
+
+
+
+
+
 }

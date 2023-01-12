@@ -15,7 +15,9 @@ public record EventDTO(
         LocalDateTime eventEndDatetime,
         Integer currentNumberOfPeople,
         Integer capacity,
-        String memo
+        String memo,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt
 ) {
     public static EventDTO of(
             Long placeId,
@@ -25,9 +27,12 @@ public record EventDTO(
             LocalDateTime eventEndDatetime,
             Integer currentNumberOfPeople,
             Integer capacity,
-            String memo
+            String memo,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt
+
     ) {
         return new EventDTO(placeId, eventName, eventStatus, eventStartDatetime, eventEndDatetime,
-                currentNumberOfPeople, capacity, memo);
+                currentNumberOfPeople, capacity, memo, createdAt, modifiedAt);
     }
 }

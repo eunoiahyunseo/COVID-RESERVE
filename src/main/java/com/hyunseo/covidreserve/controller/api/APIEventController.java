@@ -5,9 +5,13 @@ import com.hyunseo.covidreserve.dto.APIDataResponse;
 import com.hyunseo.covidreserve.dto.EventRequest;
 import com.hyunseo.covidreserve.dto.EventResponse;
 import com.hyunseo.covidreserve.service.EventService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +20,8 @@ import java.util.List;
 /**
  * @author ihyeonseo
  */
+
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -26,8 +32,8 @@ public class APIEventController {
     // [장소, 이름, 상태, 기간]로 필터잉을 가능하게 할 것이다.
     @GetMapping("/events")
     public APIDataResponse<List<EventResponse>> getEvents(
-            Long placeId,
-            String eventName,
+            @Positive Long placeId,
+            @Size(min = 2) String eventName,
             EventStatus eventStatus,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventStartDatetime,
              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventEndDatetime
@@ -41,7 +47,7 @@ public class APIEventController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
-    public APIDataResponse<String> createEvent(@RequestBody EventRequest eventRequest) {
+    public APIDataResponse<String> createEvent(@Valid @RequestBody EventRequest eventRequest) {
         boolean result = eventService.createEvent(eventRequest.toDTO());
         return APIDataResponse.of(Boolean.toString(result));
     }

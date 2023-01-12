@@ -3,6 +3,7 @@ package com.hyunseo.covidreserve.error;
 import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.dto.APIErrorResponse;
 import com.hyunseo.covidreserve.exception.GeneralException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,6 +20,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice(annotations = RestController.class)
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
+    @ExceptionHandler
+    public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
+        ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+
+        return super.handleExceptionInternal(
+                e,
+                APIErrorResponse.of(
+                        false, errorCode.getCode(), errorCode.getMessage(e)
+                ),
+                HttpHeaders.EMPTY,
+                statusCode,
+                request
+        );
+    }
+
     @ExceptionHandler
     public ResponseEntity<Object> general(GeneralException e, WebRequest request) {
         ErrorCode errorCode = e.getErrorCode();

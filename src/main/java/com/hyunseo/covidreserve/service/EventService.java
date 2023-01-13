@@ -6,6 +6,7 @@ import com.hyunseo.covidreserve.dto.EventDTO;
 import com.hyunseo.covidreserve.exception.GeneralException;
 import com.hyunseo.covidreserve.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * @author ihyeonseo
  */
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class EventService {
@@ -28,6 +30,7 @@ public class EventService {
                                     LocalDateTime eventEndDatetime
     ) {
         try {
+            log.debug("관찰 - placeId: {}", placeId);
             return eventRepository.findEvents(
                     placeId,
                     eventName,

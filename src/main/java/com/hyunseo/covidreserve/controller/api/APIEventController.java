@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author ihyeonseo
  */
 
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -48,6 +50,7 @@ public class APIEventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/events")
     public APIDataResponse<String> createEvent(@Valid @RequestBody EventRequest eventRequest) {
+        log.debug("보고 싶은 값은 : {}", eventRequest);
         boolean result = eventService.createEvent(eventRequest.toDTO());
         return APIDataResponse.of(Boolean.toString(result));
     }

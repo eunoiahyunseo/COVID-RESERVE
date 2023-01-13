@@ -1,7 +1,9 @@
 package com.hyunseo.covidreserve.service;
 
+import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.constant.EventStatus;
 import com.hyunseo.covidreserve.dto.EventDTO;
+import com.hyunseo.covidreserve.exception.GeneralException;
 import com.hyunseo.covidreserve.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +27,17 @@ public class EventService {
                                     LocalDateTime eventStartDatetime,
                                     LocalDateTime eventEndDatetime
     ) {
-        return eventRepository.findEvents(
-                placeId,
-                eventName,
-                eventStatus,
-                eventStartDatetime,
-                eventEndDatetime
-        );
+        try {
+            return eventRepository.findEvents(
+                    placeId,
+                    eventName,
+                    eventStatus,
+                    eventStartDatetime,
+                    eventEndDatetime
+            );
+        } catch(Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
     }
 
     public Optional<EventDTO> getEvent(Long eventId) {

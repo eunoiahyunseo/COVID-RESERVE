@@ -1,7 +1,9 @@
 package com.hyunseo.covidreserve.service;
 
+import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.constant.EventStatus;
 import com.hyunseo.covidreserve.dto.EventDTO;
+import com.hyunseo.covidreserve.exception.GeneralException;
 import com.hyunseo.covidreserve.repository.EventRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verify;
@@ -81,7 +85,26 @@ class EventServiceTest {
                     assertThat(event.eventEndDatetime()).isBeforeOrEqualTo(eventEndDatetime);
                 });
          verify(eventRepository).findEvents(placeId, eventName, eventStatus, eventStartDatetime, eventEndDatetime);
+    }
 
+    @DisplayName("이벤트를 검색하는데 에러가 발생하는 경우, 예약 기본 에러로 전환하여 예외를 던진다.")
+    @Test
+    void givenDataRelatedException_whenSearchEvents_thenThrowsGeneralException() {
+        // given
+        RuntimeException e = new RuntimeException("This is test.");
+        given(eventRepository.findEvents(any(),any(),any(),any(),any()))
+                .willThrow(e);
+
+        // when
+        Throwable thrown = catchThrowable(() -> sut.getEvents(null, null, null, null, null));
+
+        // then
+        assertThat(thrown)
+                .isInstanceOf(GeneralException.class )
+                .hasMessageContaining(ErrorCode.DATA_ACCESS_ERROR.getMessage());
+
+        // then(eventRepository).should(times(1)).findEvents(null, null, null, null, null);
+        verify(eventRepository).findEvents(any(),any(),any(),any(),any());
     }
 
     @DisplayName("이벤트 ID로 존재하는 이벤트를 검색하면, 해당 이벤트 정보를 출력하여 보여준다.")

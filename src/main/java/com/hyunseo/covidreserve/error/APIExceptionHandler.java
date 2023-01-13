@@ -22,51 +22,26 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
-        ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
-        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
-
-        return super.handleExceptionInternal(
-                e,
-                APIErrorResponse.of(
-                        false, errorCode.getCode(), errorCode.getMessage(e)
-                ),
-                HttpHeaders.EMPTY,
-                statusCode,
-                request
+        return getInternalResponseEntity(
+                e, ErrorCode.VALIDATION_ERROR, HttpHeaders.EMPTY, HttpStatus.BAD_REQUEST, request
         );
     }
+
 
     @ExceptionHandler
     public ResponseEntity<Object> general(GeneralException e, WebRequest request) {
         ErrorCode errorCode = e.getErrorCode();
-        HttpStatus statusCode = errorCode.isClientSideError() ?
+        HttpStatus status = errorCode.isClientSideError() ?
                 HttpStatus.BAD_REQUEST :
                 HttpStatus.INTERNAL_SERVER_ERROR;
+        return getInternalResponseEntity(e, errorCode, HttpHeaders.EMPTY, status, request);
 
-        return super.handleExceptionInternal(
-                e,
-                APIErrorResponse.of(
-                        false, errorCode.getCode(), errorCode.getMessage(e)
-                ),
-                HttpHeaders.EMPTY,
-                statusCode,
-                request
-        );
     }
 
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
-        ErrorCode errorCode = ErrorCode.INTERNAL_ERROR;
-        HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        return super.handleExceptionInternal(
-                e,
-                APIErrorResponse.of(
-                        false, errorCode.getCode(), errorCode.getMessage(e)
-                ),
-                HttpHeaders.EMPTY,
-                statusCode,
-                request
+        return getInternalResponseEntity(
+                e, ErrorCode.INTERNAL_ERROR, HttpHeaders.EMPTY, HttpStatus.INTERNAL_SERVER_ERROR, request
         );
     }
 
@@ -82,14 +57,23 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 ErrorCode.SPRING_BAD_REQUEST :
                 ErrorCode.SPRING_INTERNAL_ERROR;
 
+        return getInternalResponseEntity(ex, errorCode, HttpHeaders.EMPTY, statusCode, request);
+    }
+
+    private ResponseEntity<Object> getInternalResponseEntity (Exception e,
+                                                              ErrorCode errorCode,
+                                                              HttpHeaders headers,
+                                                              HttpStatusCode statusCode,
+                                                              WebRequest request
+    ) {
         return super.handleExceptionInternal(
-                ex,
+                e,
                 APIErrorResponse.of(
-                        false, errorCode.getCode(), errorCode.getMessage(ex)
+                        false, errorCode.getCode(), errorCode.getMessage(e)
                 ),
                 headers,
                 statusCode,
                 request
-         );
+        );
     }
 }

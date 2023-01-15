@@ -12,8 +12,8 @@ import java.util.List;
  * @author ihyeonseo
  * @created 05/01/2023 - 6:49 PM
  */
-@RequestMapping("/api")
-@RestController
+//@RequestMapping("/api")
+//@RestController
 public class APIPlaceController {
 
     @GetMapping("/places")

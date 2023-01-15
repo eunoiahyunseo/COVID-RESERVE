@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ihyeonseo
  * @created 05/01/2023 - 6:46 PM
  */
-@RequestMapping("/api")
-@RestController
+//@RequestMapping("/api")
+//@RestController
 public class APIAuthController {
     @GetMapping("/sign-up")
     public String signUp() {

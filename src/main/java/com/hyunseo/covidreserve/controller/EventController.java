@@ -33,26 +33,26 @@ public class EventController {
             LocalDateTime eventEndDatetime
     ) {
         Map<String, Object> map = new HashMap<>();
-        map.put("events", List.of(EventResponse.of(
-                        1L,
-                        "오후 운동",
-                        EventStatus.OPENED,
-                        LocalDateTime.of(2021, 1, 1, 13, 0, 0),
-                        LocalDateTime.of(2021, 1, 1, 16, 0, 0),
-                        0,
-                        24,
-                        "마스크 꼭 착용하세요"
-                ), EventResponse.of(
-                        2L,
-                        "오후 운동",
-                        EventStatus.OPENED,
-                        LocalDateTime.of(2021, 1, 1, 13, 0, 0),
-                        LocalDateTime.of(2021, 1, 1, 16, 0, 0),
-                        0,
-                        24,
-                        "마스크 꼭 착용하세요"
-                )
-        ));
+//        map.put("events", List.of(EventResponse.of(
+//                        1L,
+//                        "오후 운동",
+//                        EventStatus.OPENED,
+//                        LocalDateTime.of(2021, 1, 1, 13, 0, 0),
+//                        LocalDateTime.of(2021, 1, 1, 16, 0, 0),
+//                        0,
+//                        24,
+//                        "마스크 꼭 착용하세요"
+//                ), EventResponse.of(
+//                        2L,
+//                        "오후 운동",
+//                        EventStatus.OPENED,
+//                        LocalDateTime.of(2021, 1, 1, 13, 0, 0),
+//                        LocalDateTime.of(2021, 1, 1, 16, 0, 0),
+//                        0,
+//                        24,
+//                        "마스크 꼭 착용하세요"
+//                )
+//        ));
 
         return new ModelAndView("event/index", map);
     }

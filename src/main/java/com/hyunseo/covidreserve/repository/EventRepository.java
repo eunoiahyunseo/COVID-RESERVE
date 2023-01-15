@@ -1,7 +1,9 @@
 package com.hyunseo.covidreserve.repository;
 
 import com.hyunseo.covidreserve.constant.EventStatus;
+import com.hyunseo.covidreserve.domain.Event;
 import com.hyunseo.covidreserve.dto.EventDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,10 +12,7 @@ import java.util.Optional;
 /**
  * @author ihyeonseo
  */
-public interface EventRepository {
-
-    // default>> 인터페이스를 익명클래스로 간단히 만들어보기 위해서, 한 것이다.
-    // 나중에 EventRepository를 완성하고 나면, default는 때줄 것이다.
+public interface EventRepository extends JpaRepository<Event, Long> {
     default List<EventDTO> findEvents(
             Long placeId,
             String eventName,

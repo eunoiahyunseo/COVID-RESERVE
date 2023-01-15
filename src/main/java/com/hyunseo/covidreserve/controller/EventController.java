@@ -1,5 +1,6 @@
 package com.hyunseo.covidreserve.controller;
 
+import com.hyunseo.covidreserve.aop.annotation.Timer;
 import com.hyunseo.covidreserve.constant.EventStatus;
 import com.hyunseo.covidreserve.dto.EventResponse;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import java.util.Map;
  * @author ihyeonseo
  */
 
+
 @RequestMapping("/events")
 @Controller
 public class EventController {
 
+    // @Timer
     @GetMapping
     public ModelAndView events(
             Integer placeId,
@@ -54,9 +57,12 @@ public class EventController {
         return new ModelAndView("event/index", map);
     }
 
+    @Timer
     @GetMapping("/{eventId}")
-    public ModelAndView eventDetail(@PathVariable Long eventId) {
+    public ModelAndView eventDetail(@PathVariable Long eventId) throws Exception {
         Map<String, Object> map = new HashMap<>();
+
+        Thread.sleep(3000);
 
         // TODO: 임시 데이터. 추후 삭제 예정
         map.put("event", EventResponse.of(

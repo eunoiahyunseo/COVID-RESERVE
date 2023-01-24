@@ -1,30 +1,33 @@
 package com.hyunseo.covidreserve.controller.api;
 
 import com.hyunseo.covidreserve.constant.PlaceType;
-import com.hyunseo.covidreserve.domain.Place;
 import com.hyunseo.covidreserve.dto.APIDataResponse;
-import com.hyunseo.covidreserve.dto.PlaceDTO;
+import com.hyunseo.covidreserve.dto.PlaceDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * @author ihyeonseo
- * @created 05/01/2023 - 6:49 PM
  */
+
+@Deprecated
 //@RequestMapping("/api")
 //@RestController
-public class APIPlaceController {
+public class ApiPlaceController {
 
     @GetMapping("/places")
-    public APIDataResponse<List<PlaceDTO>> getPlaces() {
-        return APIDataResponse.of(List.of(PlaceDTO.of(
+    public APIDataResponse<List<PlaceDto>> getPlaces() {
+        return APIDataResponse.of(List.of(PlaceDto.of(
+                1L,
                 PlaceType.COMMON,
                 "행복한필라테스",
                 "배울2로 61 1013동 1203호",
                 "010-2488-4113",
                 45,
-                "신장개업"
+                "신장개업",
+                null,
+                null
         )));
     }
 
@@ -34,18 +37,21 @@ public class APIPlaceController {
     }
 
     @GetMapping("/places/{placeId}")
-    public APIDataResponse<PlaceDTO> getPlace(@PathVariable Integer placeId) {
+    public APIDataResponse<PlaceDto> getPlace(@PathVariable Integer placeId) {
         if(placeId.equals(2)) {
             return APIDataResponse.of(null);
         }
 
-        return APIDataResponse.of(PlaceDTO.of(
+        return APIDataResponse.of(PlaceDto.of(
+                1L,
                 PlaceType.COMMON,
                 "행복한필라테스",
                 "배울2로 61 1013동 1203호",
                 "010-2488-4113",
                 45,
-                "신장개업"
+                "신장개업",
+                null,
+                null
         ));
     }
 

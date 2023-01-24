@@ -23,7 +23,6 @@ public class APIErrorResponse {
         return new APIErrorResponse(success, errorCode, message);
     }
 
-    // errorcode -> Integer (errorCode) + String (message)가 포함되어 있음
     public static APIErrorResponse of(Boolean success, ErrorCode errorCode) {
         return new APIErrorResponse(success, errorCode.getCode(), errorCode.getMessage());
     }

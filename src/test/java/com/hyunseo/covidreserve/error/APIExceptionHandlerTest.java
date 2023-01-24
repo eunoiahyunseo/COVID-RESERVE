@@ -1,6 +1,7 @@
 package com.hyunseo.covidreserve.error;
 
 import com.hyunseo.covidreserve.constant.ErrorCode;
+import com.hyunseo.covidreserve.controller.error.APIExceptionHandler;
 import com.hyunseo.covidreserve.dto.APIErrorResponse;
 import com.hyunseo.covidreserve.exception.GeneralException;
 import jakarta.validation.ConstraintViolationException;

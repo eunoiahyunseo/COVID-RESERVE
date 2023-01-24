@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
  * @author ihyeonseo
  */
 public record EventResponse(
-        Long placeId,
+        Long id,
+        PlaceDto place,
         String eventName,
         EventStatus eventStatus,
         LocalDateTime eventStartDatetime,
@@ -18,7 +19,8 @@ public record EventResponse(
         String memo
 ) {
     public static EventResponse of(
-            Long placeId,
+            Long id,
+            PlaceDto place,
             String eventName,
             EventStatus eventStatus,
             LocalDateTime eventStartDatetime,
@@ -28,7 +30,8 @@ public record EventResponse(
             String memo
     ) {
         return new EventResponse(
-                placeId,
+                id,
+                place,
                 eventName,
                 eventStatus,
                 eventStartDatetime,
@@ -39,10 +42,11 @@ public record EventResponse(
         );
     }
 
-    public static EventResponse from(EventDTO eventDTO) {
+    public static EventResponse from(EventDto eventDTO) {
         if(eventDTO == null) {return null;}
         return EventResponse.of(
-                eventDTO.placeId(),
+                eventDTO.id(),
+                eventDTO.placeDto(),
                 eventDTO.eventName(),
                 eventDTO.eventStatus(),
                 eventDTO.eventStartDatetime(),

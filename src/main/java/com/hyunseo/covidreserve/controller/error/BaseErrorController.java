@@ -1,4 +1,4 @@
-package com.hyunseo.covidreserve.error;
+package com.hyunseo.covidreserve.controller.error;
 
 import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.dto.APIErrorResponse;
@@ -22,7 +22,6 @@ public class BaseErrorController implements ErrorController {
     public ModelAndView errorHtml(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = status.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
-
         return new ModelAndView(
                 "error",
                 Map.of(
@@ -33,11 +32,12 @@ public class BaseErrorController implements ErrorController {
                 status);
     }
 
+
+
     @RequestMapping("/error")
     public ResponseEntity<APIErrorResponse> error(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = status.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
-
         return ResponseEntity
                 .status(status)
                 .body(APIErrorResponse.of(false, errorCode));

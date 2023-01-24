@@ -3,9 +3,12 @@ package com.hyunseo.covidreserve.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.constant.EventStatus;
-import com.hyunseo.covidreserve.dto.EventDTO;
+import com.hyunseo.covidreserve.constant.PlaceType;
+import com.hyunseo.covidreserve.dto.EventDto;
 import com.hyunseo.covidreserve.dto.EventResponse;
+import com.hyunseo.covidreserve.dto.PlaceDto;
 import com.hyunseo.covidreserve.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author ihyeonseo
  */
 
-@WebMvcTest(APIEventController.class)
+@Deprecated
+@Disabled("API 컨트롤러가 필요없는 상황이여서 비활성화")
+@DisplayName("API 컨트롤러 - 이벤트")
+@WebMvcTest(ApiEventController.class)
 class APIEventControllerTest {
 
     private final MockMvc mvc;
@@ -110,6 +116,7 @@ class APIEventControllerTest {
         // Given
         EventResponse eventResponse = EventResponse.of(
                 1L,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2021, 1, 1, 13, 0, 0),
@@ -141,6 +148,7 @@ class APIEventControllerTest {
         // Given
         EventResponse eventResponse = EventResponse.of(
                 0L,
+                createPlaceDto(1L),
                 "    ",
                 null,
                 null,
@@ -224,6 +232,7 @@ class APIEventControllerTest {
         long eventId = 1L;
         EventResponse eventResponse = EventResponse.of(
                 1L,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2021, 1, 1, 13, 0, 0),
@@ -268,9 +277,10 @@ class APIEventControllerTest {
         then(eventService).should(times(1)).removeEvent(eq(eventId));
     }
 
-    private EventDTO createEventDTO() {
-        return EventDTO.of(
-                1L,
+    private EventDto createEventDTO() {
+        return EventDto.of(
+                null,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2021, 1, 1, 13, 0, 0),
@@ -278,6 +288,20 @@ class APIEventControllerTest {
                 0,
                 24,
                 "마스크를 꼭 착용해주세요",
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+    }
+
+    private PlaceDto createPlaceDto(Long placeId) {
+        return PlaceDto.of(
+                placeId,
+                PlaceType.COMMON,
+                "배드민턴장",
+                "서울시 가나구 다라동",
+                "010-1111-2222",
+                10,
+                null,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );

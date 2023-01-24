@@ -2,7 +2,10 @@ package com.hyunseo.covidreserve.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -17,22 +20,34 @@ import java.util.function.Predicate;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    OK(0, ErrorCategory.NORMAL, "Ok"),
+    OK(0, HttpStatus.OK, "Ok"),
 
-    BAD_REQUEST(10000, ErrorCategory.CLIENT_SIDE, "bad request"),
-    SPRING_BAD_REQUEST(10001, ErrorCategory.CLIENT_SIDE, "spring-detected bad request"),
-    VALIDATION_ERROR(10002, ErrorCategory.CLIENT_SIDE, "Validation error"),
+    BAD_REQUEST(10000, HttpStatus.BAD_REQUEST, "bad request"),
+    SPRING_BAD_REQUEST(10001, HttpStatus.BAD_REQUEST, "spring-detected bad request"),
+    VALIDATION_ERROR(10002, HttpStatus.BAD_REQUEST, "Validation error"),
+    NOT_FOUND(10003, HttpStatus.NOT_FOUND, "Requested resource is not found"),
 
-    INTERNAL_ERROR(20000, ErrorCategory.SERVER_SIDE, "internal error"),
-    SPRING_INTERNAL_ERROR(20001, ErrorCategory.SERVER_SIDE, "spring-detected internal error"),
-    DATA_ACCESS_ERROR(20002, ErrorCategory.SERVER_SIDE, "Data access error");
+    INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "internal error"),
+    SPRING_INTERNAL_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "spring-detected internal error"),
+    DATA_ACCESS_ERROR(20002, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error");
 
+    // 인자로 HttpStatus.BAD_REQUEST -> ErrorCode.BAD_REQUEST 반환
+    public static ErrorCode valueOf(HttpStatusCode httpStatusCode) {
+        return Arrays.stream(values())
+                .filter(errorCode -> errorCode.getHttpStatusCode() == httpStatusCode)
+                .findFirst()
+                .orElseGet(() -> {
+                    if(httpStatusCode.is4xxClientError()) { return ErrorCode.BAD_REQUEST;}
+                    else if(httpStatusCode.is5xxServerError()) {return ErrorCode.INTERNAL_ERROR;}
+                    else {return ErrorCode.OK; }
+                });
+    }
 
     private final Integer code;
-    private final ErrorCategory errorCategory;
+    private final HttpStatusCode httpStatusCode;
     private final String message;
 
-    public String getMessage(Exception e) {
+    public String getMessage(Throwable e) {
         return getMessage(this.getMessage() + " - " + e.getMessage());
     }
 
@@ -43,20 +58,8 @@ public enum ErrorCode {
 
     }
 
-    public boolean isClientSideError() {
-        return this.getErrorCategory() == ErrorCategory.CLIENT_SIDE;
-    }
-
-    public boolean isServerSideError() {
-        return this.getErrorCategory() == ErrorCategory.SERVER_SIDE;
-    }
-
     @Override
     public String toString() {
         return String.format("%s (%d)", this.name(), this.getCode());
-    }
-
-    private enum ErrorCategory {
-        NORMAL, CLIENT_SIDE, SERVER_SIDE
     }
 }

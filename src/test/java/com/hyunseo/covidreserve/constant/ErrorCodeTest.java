@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.http.HttpStatus;
 
 import java.util.stream.Stream;
 
@@ -75,5 +76,36 @@ class ErrorCodeTest {
         // Then
         assertThat(result).isEqualTo("INTERNAL_ERROR (20000)");
     }
+
+
+    @ParameterizedTest(name = "[{index}] {0} ===> {1}")
+    @MethodSource
+    @DisplayName("HttpStatus 에 대응하는, ErrorCode 찾기 - 정상")
+    void givenHttpStatus_whenGettingErrorCode_thenReturnsErrorCode(HttpStatus sut, ErrorCode expected) {
+        // given
+
+        // when
+        ErrorCode actual = ErrorCode.valueOf(sut);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+
+    }
+    static Stream<Arguments> givenHttpStatus_whenGettingErrorCode_thenReturnsErrorCode() {
+        return Stream.of(
+                // 정의된 값
+                arguments(HttpStatus.OK, ErrorCode.OK),
+                arguments(HttpStatus.BAD_REQUEST, ErrorCode.BAD_REQUEST),
+                arguments(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_ERROR),
+
+                // 정의되지 않은 값
+                arguments(HttpStatus.CONTINUE, ErrorCode.OK),
+                arguments(HttpStatus.ACCEPTED, ErrorCode.OK),
+                arguments(HttpStatus.MULTI_STATUS, ErrorCode.OK),
+                arguments(HttpStatus.MOVED_PERMANENTLY, ErrorCode.OK),
+                arguments(HttpStatus.CONFLICT, ErrorCode.BAD_REQUEST)
+        );
+    }
+
 
 }

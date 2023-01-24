@@ -1,6 +1,6 @@
 package com.hyunseo.covidreserve.integration;
 
-import com.hyunseo.covidreserve.dto.EventDTO;
+import com.hyunseo.covidreserve.dto.EventDto;
 import com.hyunseo.covidreserve.service.EventService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -28,7 +27,7 @@ public class EventServiceSociableTest {
         // given
 
         // when
-        List<EventDTO> list = sut.getEvents(3L, null, null, null, null);
+        List<EventDto> list = sut.getEvents(3L, null, null, null, null);
 
         // then
         assertThat(list).hasSize(0);

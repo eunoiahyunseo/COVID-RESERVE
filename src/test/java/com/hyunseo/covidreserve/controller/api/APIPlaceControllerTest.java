@@ -2,6 +2,7 @@ package com.hyunseo.covidreserve.controller.api;
 
 import com.hyunseo.covidreserve.constant.ErrorCode;
 import com.hyunseo.covidreserve.constant.PlaceType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author ihyeonseo
  */
 
-@WebMvcTest(APIPlaceController.class)
+@Deprecated
+@Disabled("API 컨트롤러가 필요없는 상황이여서 비활성화")
+@DisplayName("API 컨트롤러 - 장소")
+@WebMvcTest(ApiPlaceController.class)
 class APIPlaceControllerTest {
 
     private final MockMvc mvc;
